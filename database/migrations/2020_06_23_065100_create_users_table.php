@@ -15,18 +15,26 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->string('full_name');
+            $table->string('last_name');
+            $table->string('email',191)->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
             $table->uuid('curriculum_id')->nullable();
+            $table->uuid('file_id')->nullable();
+            $table->uuid('company_id')->nullable();
             $table->foreign('curriculum_id')
                   ->references('id')
                   ->on('currims')
                   ->onDelete('cascade');
-            $table->string('name');
-            $table->string('lname');
-            $table->string('phone');
-            $table->string('type');
-            $table->string('email',191)->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->foreign('file_id')
+                    ->references('id')
+                    ->on('files')
+                    ->onDelete('cascade');
+            $table->foreign('company_id')
+                    ->references('id')
+                    ->on('companies')
+                    ->onDelete('cascade');
             $table->rememberToken();
 
             $table->timestamps();

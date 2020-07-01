@@ -13,7 +13,7 @@ class RegisterRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,13 +24,9 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'first' => 'required|string',
-            'last' => 'required|string',
+            'full_name' => 'required|string',
+            'last_name' => 'required|string',
             'email' => 'required|string|email|unique:users',
-            'type' => 'required|string',
-            'phone' => [
-                'required', 'digits_between:9,15', 'unique:users'
-            ],
             'password' => 'required|string|confirmed|min:8'
         ];
     }

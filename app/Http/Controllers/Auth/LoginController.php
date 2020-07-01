@@ -4,14 +4,13 @@ namespace App\Http\Controllers\Auth;
 
 use App\Enums\ResponseCodes;
 use App\Http\Controllers\Controller;
-use App\Notifications\Auth\SecondFactorAuthenticationCode;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Database\ConnectionInterface as DB;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Http\Requests\User\LoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\User;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use MarcinOrlowski\ResponseBuilder\ResponseBuilder;
 use Tymon\JWTAuth\Facades\JWTAuth;

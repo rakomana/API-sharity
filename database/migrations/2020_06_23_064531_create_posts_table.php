@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCurrimsTable extends Migration
+class CreatePostsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,14 @@ class CreateCurrimsTable extends Migration
      */
     public function up()
     {
-
-        Schema::create('currims', function (Blueprint $table) {
+        Schema::create('posts', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('id_or_passport');
-            $table->string('nationality');
-            $table->string('gender');
-            $table->string('languages');
-            $table->string('physical_address');
+            $table->string('title');
+            $table->string('message');
             $table->string('category');
-            $table->string('phone_number');
-            $table->string('documents');
-            $table->string('video');
+            $table->string('file_type');
+            $table->string('file');
+            $table->string('status');
             $table->timestamps();
         });
     }
@@ -36,6 +32,6 @@ class CreateCurrimsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('currims');
+        Schema::dropIfExists('posts');
     }
 }

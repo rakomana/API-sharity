@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
 use Illuminate\Http\Request;
-use App\Currim;
-use App\User;
+use App\Models\Currim;
+use App\Models\User;
 use App\Models\Media;
 use App\Http\Requests\User\UserUpdateRequest;
 use Illuminate\Database\ConnectionInterface as DB;

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\RegisterRequest;
-use App\User;
+use App\Models\User;
 use Illuminate\Database\ConnectionInterface as DB;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
@@ -42,22 +42,15 @@ class RegisterController extends Controller
 
         // Create the user
         $user = new $this->user();
-        $user->name = $request->name;
-        $user->lname = $request->lname;
+        $user->full_name = $request->full_name;
+        $user->last_name = $request->last_name;
         $user->email = $request->email;
-        $user->phone = $request->phone;
-        $user->type = $request->type; //enum  for user type
-        $user->password = Hash::make($request->password);
+        $user->password = $request->password;
         $user->save();
 
+        $jwtToken = JWTAuth::fromUser($user);
+
         //profile picture that goes along with the model via media library
-
-        // Log user in automatically
-        $jwtToken = JWTAuth::claims(['two_fa' => true])->fromUser($user);
-
-        // Send email verification notification
-        $user->sendEmailVerificationNotification();
-
         $this->db->commit();
 
         return ResponseBuilder::asSuccess()

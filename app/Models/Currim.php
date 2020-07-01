@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
@@ -14,8 +14,8 @@ class Currim extends Model implements HasMedia
 
     protected $guarded;
 
-    public function user()
+    public function curriculum()
     {
-        return $this->hasMany(User::class);
+        return $this->belongsTo(Currim::class);
     }
 }

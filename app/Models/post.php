@@ -1,22 +1,28 @@
 <?php
 
 namespace App\Models;
-use Emadadly\LaravelUuid\Uuids;
-use Illuminate\Database\Eloquent\Model;
 
-class post extends Model
+use Illuminate\Database\Eloquent\Model;
+use App\Traits\UUID;
+
+class Post extends Model
 {
-    use Uuids;
+    use UUID;
+
+    protected $guarded;
     
-     protected $fillable = [
-        'user_id','jobTitle', 'companyName','location', 'salary','fullDescription','experience','skills','phoneNumber','email','type'
-        ];
-        public function user()
-        {
-            return $this->belongsTo('App\User');
-        }
-        public function currims()
-        {
-            return $this->hasMany('App\Models\Currim');
-        }
+    public function company()
+    {
+        return $this->hasMany(Company::class);
+    }
+
+    public function like()
+    {
+        return $this->hasMany(Likes::class);
+    }
+
+    public function comment()
+    {
+        return $this->hasMany(Comments::class);
+    }
 }

@@ -1,7 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
+use App\Enums\MediaCollections;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -13,9 +14,8 @@ class User extends Authenticatable implements JWTSubject
     use Notifiable, UUID;
 
  
-    protected $fillable = [
-        'name','lname','phone','type', 'email', 'password',
-    ];
+    protected $guarded;
+    
     protected $hidden = [
         'password', 'remember_token',
     ];
@@ -40,15 +40,29 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
+    public function registerMediaCollections(): void
+    {
+        $this
+        ->addMediaCollection(MediaCollection::ProfilePicture)
+        ->useFallbackUrl(url('/images/profile-picture-placeholder.jpg'))
+        ->singleFile();
+    }
+
     public function curriculum()
     {
         return $this->belongsTo(Currim::class);
     }
-   
-    public function posts()
+
+    public function file()
     {
-        return $this->hasMany('App\post');
+        return $this->belongsTo(File::class);
     }
+
+    public function company()
+    {
+        return $this->belongsTo(Companies::class);
+    }
+   
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];

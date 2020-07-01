@@ -16,8 +16,8 @@ use App\Http\Controllers\Auth\CurrimController;
 |
 */
 
-Route::post('user/auth/login',[LoginController::class, 'login']);
-Route::post('user/auth/register',[RegisterController::class, 'store']);
+Route::post('auth/login',[LoginController::class, 'login']);
+Route::post('auth/register',[RegisterController::class, 'register']);
 
 Route::middleware('auth:api_user')->group(function() {
     Route::post('curriculum',[CurrimController::class, 'store']);
