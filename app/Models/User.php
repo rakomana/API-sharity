@@ -3,15 +3,19 @@
 namespace App\Models;
 
 use App\Enums\MediaCollections;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Spatie\MediaLibrary\HasMedia\HasMedia;
+use Spatie\MediaLibrary\Models\Media;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Traits\UUID;
+use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable implements JWTSubject
+class User extends Authenticatable implements JWTSubject, HasMedia
 {
-    use Notifiable, UUID;
+    use Notifiable, UUID, HasMediaTrait, HasRoles;
 
  
     protected $guarded;
@@ -43,7 +47,7 @@ class User extends Authenticatable implements JWTSubject
     public function registerMediaCollections(): void
     {
         $this
-        ->addMediaCollection(MediaCollection::ProfilePicture)
+        ->addMediaCollection(MediaCollections::ProfilePicture)
         ->useFallbackUrl(url('/images/profile-picture-placeholder.jpg'))
         ->singleFile();
     }
@@ -60,7 +64,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function company()
     {
-        return $this->belongsTo(Companies::class);
+        return $this->belongsTo(Company::class);
     }
    
     protected $casts = [

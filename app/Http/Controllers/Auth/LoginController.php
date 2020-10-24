@@ -77,7 +77,7 @@ class LoginController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function logout(Request $request)
+    public function logout()
     {
         $this->guard()->logout();
 

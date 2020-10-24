@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers\User;
 
+
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Enums\MediaCollections;
+use App\Http\Requests\User\Account\AccountUpdateRequest;
 use App\Models\User;
 use App\Models\Media;
 use Illuminate\Database\ConnectionInterface as DB;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Hash;
 use MarcinOrlowski\ResponseBuilder\ResponseBuilder;
 
-
-
-class currimController extends Controller
+class AccountController extends Controller
 {
-    private Currim $curriculum;
     private Media $media;
     private User $user;
     private DB $db;
@@ -42,7 +44,7 @@ class currimController extends Controller
     {
         return ResponseBuilder::asSuccess()
             ->withHttpCode(Response::HTTP_OK)
-            ->withMessage("The user if fetched succesfully created")
+            ->withMessage("The user is fetched succesfully")
             ->withData(["User Details" => $request->user()])
             ->build();
     }
@@ -53,7 +55,7 @@ class currimController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function update(Request $request)
+    public function update(AccountUpdateRequest $request)
     {
         $this->db->beginTransaction();
 
@@ -100,11 +102,12 @@ class currimController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function updateProfilePicture(Request $request, Media $media)
+    public function updateProfilePicture(Request $request)
     {
-        $user = $request->user();
-
         //update profile picture
+        $user = $request->user();
+        $user->addMedia($request->file('profile_picture'))
+            ->toMediaCollection(MediaCollections::ProfilePicture);
 
         return ResponseBuilder::asSuccess()
             ->withHttpCode(Response::HTTP_OK)
@@ -123,7 +126,7 @@ class currimController extends Controller
         $this->db->beginTransaction();
 
         $user = $request->user();
-        $user->password = $request->password; //
+        $user->password = Hash::make($request->password); //
         $user->save();
 
         //Notify the user about password change via email
@@ -149,7 +152,7 @@ class currimController extends Controller
 
         return ResponseBuilder::asSuccess()
             ->withHttpCode(Response::HTTP_OK)
-            ->withMessage("User succesfully deleted")
+            ->withMessage("User account succesfully deleted")
             ->build();
     }
 }

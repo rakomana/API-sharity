@@ -18,8 +18,6 @@ class CreateCompaniesTable extends Migration
             $table->string('company_name');
             $table->string('description');
             $table->string('phone_number');
-            $table->string('logo');
-            $table->string('documents');
             $table->string('status');
             $table->string('category');
             $table->string('website');

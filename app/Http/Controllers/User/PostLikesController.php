@@ -9,13 +9,14 @@ use App\Models\Media;
 use App\Http\Requests\User\UserUpdateRequest;
 use Illuminate\Database\ConnectionInterface as DB;
 use Illuminate\Http\Response;
+use App\Http\Controllers\Controller;
 use MarcinOrlowski\ResponseBuilder\ResponseBuilder;
 
 
 
 class PostLikesController extends Controller
 {
-    private Post post;
+    private Post $post;
     private Media $media;
     private User $user;
     private DB $db;
@@ -28,8 +29,8 @@ class PostLikesController extends Controller
      * @param User $user
      * @param DB $db
      */
-    public function __construct(Post post, DB $db, User $user, Media $media) {
-        $this->post = post;
+    public function __construct(Post $post, DB $db, User $user, Media $media) {
+        $this->post = $post;
         $this->db = $db;
         $this->user = $user;
         $this->media = $media;

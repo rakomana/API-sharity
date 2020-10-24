@@ -6,9 +6,13 @@ use Illuminate\Http\Request;
 use App\Models\Currim;
 use App\Models\User;
 use App\Models\Media;
-use App\Http\Requests\User\UserUpdateRequest;
+use App\Enums\ResponseCodes;
+use App\Enums\MediaCollections;
+use App\Http\Requests\User\Curriculum\CurriculumStoreRequest;
+use App\Http\Requests\User\Curriculum\CurriculumUpdateRequest;
 use Illuminate\Database\ConnectionInterface as DB;
 use Illuminate\Http\Response;
+use App\Http\Controllers\Controller;
 use MarcinOrlowski\ResponseBuilder\ResponseBuilder;
 
 
@@ -42,23 +46,34 @@ class currimController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function store(Request $request)
+    public function store(CurriculumStoreRequest $request)
     {
+        /*
         if ($request->user()->curriculum) {
             return ResponseBuilder::asError(ResponseCodes::SOMETHING_WENT_WRONG)
                 ->withHttpCode(Response::HTTP_BAD_REQUEST)
                 ->withMessage("User already has a CV")
                 ->build();
         }
-        
+        */
         $this->db->beginTransaction();
         
         $curriculum =new $this->curriculum();
-        $curriculum->full = $request->full;
+        $curriculum->id_or_passport = $request->id_or_passport;
+        $curriculum->nationality = $request->nationality;
+        $curriculum->gender = $request->gender;
+        $curriculum->languages = $request->languages;
+        $curriculum->physical_address = $request->physical_address;
+        $curriculum->category = $request->category;
+        $curriculum->languages = $request->languages;
+        $curriculum->phone_number = $request->phone_number;
+        $curriculum->documents = $request->documents;//rm
+        $curriculum->video = '1';//rm
 		$curriculum->save();
-
+        
         //upload file to s3
-        $curriculum->addMedia($request->cc_a)->toMediaCollection('video-cv', 's3');
+        $curriculum->addMedia($request->file('video'))
+                    ->toMediaCollection(MediaCollections::VideoCurriculum, 's3');
         
         //associate curriculum  with the user
         $user =$request->user();
@@ -88,7 +103,7 @@ class currimController extends Controller
             ->withHttpCode(Response::HTTP_OK)
             ->withMessage("Curriculum vitae's succesfully fetched")
             ->withData(["Curriculum Vitae's" => $curriculum, 
-                        "Video CV" => $curriculum->getMedia('video-cv')])
+                        "Video CV" => $curriculum->getMedia(MediaCollections::VideoCurriculum)])
             ->build();
     }
  
@@ -98,12 +113,20 @@ class currimController extends Controller
      * @param UserUpdateRequest $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function update(Request $request)
+    public function update(CurriculumUpdateRequest $request)
     {
         $this->db->beginTransaction();
         
         $curriculum = $request->user()->curriculum;
-        $curriculum->full = $request->full;
+        $curriculum->id_or_passport = $request->id_or_passport;
+        $curriculum->nationality = $request->nationality;
+        $curriculum->gender = $request->gender;
+        $curriculum->languages = $request->languages;
+        $curriculum->physical_address = $request->physical_address;
+        $curriculum->category = $request->category;
+        $curriculum->phone_number = $request->phone_number;
+        $curriculum->documents = $request->documents;//rm
+        $curriculum->video = $request->video;//rm
 		$curriculum->save();
 
         $this->db->commit();
@@ -122,7 +145,7 @@ class currimController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function updateVideoCv(Request $request, Media $media)
+    public function updateVideoCv(Request $request)
     {  
         if($request->user()->curriculum->media)
         {
@@ -133,8 +156,8 @@ class currimController extends Controller
         }
 
         $request->user()->curriculum
-                 ->addMedia($request->cc_a)
-                 ->toMediaCollection('video-cv', 's3');
+                 ->addMedia($request->file('cc_a'))
+                 ->toMediaCollection(MediaCollections::VideoCurriculum, 's3');
 
         return ResponseBuilder::asSuccess()
             ->withHttpCode(Response::HTTP_OK)
@@ -151,7 +174,7 @@ class currimController extends Controller
     {
         $curriculum = $request->user()->curriculum;
 
-        $curriculum->clearMediaCollection('video-cv');
+        $curriculum->clearMediaCollection(MediaCollections::VideoCurriculum);
 
         return ResponseBuilder::asSuccess()
             ->withHttpCode(Response::HTTP_OK)

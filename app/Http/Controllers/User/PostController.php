@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Models\Post;
 use App\Models\Media;
 use App\Http\Requests\User\UserUpdateRequest;
+use App\Http\Controllers\Controller;
 use Illuminate\Database\ConnectionInterface as DB;
 use Illuminate\Http\Response;
 use MarcinOrlowski\ResponseBuilder\ResponseBuilder;

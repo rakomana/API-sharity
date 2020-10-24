@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\User\RegisterRequest;
+use App\Http\Requests\User\Auth\RegisterRequest;
 use App\Models\User;
 use Illuminate\Database\ConnectionInterface as DB;
 use Illuminate\Http\Response;
@@ -45,7 +45,7 @@ class RegisterController extends Controller
         $user->full_name = $request->full_name;
         $user->last_name = $request->last_name;
         $user->email = $request->email;
-        $user->password = $request->password;
+        $user->password = Hash::make($request->password);
         $user->save();
 
         $jwtToken = JWTAuth::fromUser($user);
