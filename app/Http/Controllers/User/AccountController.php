@@ -45,7 +45,7 @@ class AccountController extends Controller
         return ResponseBuilder::asSuccess()
             ->withHttpCode(Response::HTTP_OK)
             ->withMessage("The user is fetched succesfully")
-            ->withData(["User Details" => $request->user()])
+            ->withData(["user" => $request->user()])
             ->build();
     }
 
@@ -74,7 +74,7 @@ class AccountController extends Controller
         return ResponseBuilder::asSuccess()
             ->withHttpCode(Response::HTTP_OK)
             ->withMessage("The user is succesfully updated")
-            ->withData(["User" => $user])
+            ->withData(["user" => $user])
             ->build();
     }
  
@@ -91,7 +91,7 @@ class AccountController extends Controller
         return ResponseBuilder::asSuccess()
             ->withHttpCode(Response::HTTP_OK)
             ->withMessage("User logs succesfully fetched")
-            ->withData(["User's logs" => $user])
+            ->withData(["logs" => $user])
             ->build();
     }
 

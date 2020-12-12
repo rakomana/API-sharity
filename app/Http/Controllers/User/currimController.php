@@ -67,13 +67,12 @@ class currimController extends Controller
         $curriculum->category = $request->category;
         $curriculum->languages = $request->languages;
         $curriculum->phone_number = $request->phone_number;
-        $curriculum->documents = $request->documents;//rm
-        $curriculum->video = '1';//rm
 		$curriculum->save();
         
         //upload file to s3
+        /*
         $curriculum->addMedia($request->file('video'))
-                    ->toMediaCollection(MediaCollections::VideoCurriculum, 's3');
+                    ->toMediaCollection(MediaCollections::VideoCurriculum, 's3');*/
         
         //associate curriculum  with the user
         $user =$request->user();

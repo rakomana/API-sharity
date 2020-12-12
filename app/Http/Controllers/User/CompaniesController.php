@@ -100,7 +100,7 @@ class CompaniesController extends Controller
         return ResponseBuilder::asSuccess()
             ->withHttpCode(Response::HTTP_OK)
             ->withMessage("Company succesfully registered")
-            ->withData(["Company" => $company])
+            ->withData(["company" => $company])
             ->build();
     }
 
@@ -117,7 +117,7 @@ class CompaniesController extends Controller
         return ResponseBuilder::asSuccess()
             ->withHttpCode(Response::HTTP_OK)
             ->withMessage("Company succesfully fetched")
-            ->withData(["Company" => $company])
+            ->withData(["company" => $company])
             ->build();
     }
 
@@ -146,7 +146,7 @@ class CompaniesController extends Controller
         return ResponseBuilder::asSuccess()
             ->withHttpCode(Response::HTTP_OK)
             ->withMessage("Company succesfully updated")
-            ->withData(["Company" => $company])
+            ->withData(["company" => $company])
             ->build();
     }
 
@@ -165,7 +165,7 @@ class CompaniesController extends Controller
         return ResponseBuilder::asSuccess()
             ->withHttpCode(Response::HTTP_OK)
             ->withMessage("Company documents succesfully fetched")
-            ->withData(["Company" => $company])
+            ->withData(["company" => $company])
             ->build();
     }
 
@@ -210,7 +210,7 @@ class CompaniesController extends Controller
         return ResponseBuilder::asSuccess()
             ->withHttpCode(Response::HTTP_OK)
             ->withMessage("Company logo succesfully fetched")
-            ->withData(["Company" => $company])
+            ->withData(["company" => $company])
             ->build();
     }
     /**
