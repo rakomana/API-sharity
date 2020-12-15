@@ -84,7 +84,7 @@ class currimController extends Controller
         return ResponseBuilder::asSuccess()
             ->withHttpCode(Response::HTTP_OK)
             ->withMessage("Curriculum vitae succesfully created")
-            ->withData(["Curriculum Vitae" => $curriculum])
+            ->withData(["curriculum" => $curriculum])
             ->build();
     }
 
@@ -101,8 +101,8 @@ class currimController extends Controller
         return ResponseBuilder::asSuccess()
             ->withHttpCode(Response::HTTP_OK)
             ->withMessage("Curriculum vitae's succesfully fetched")
-            ->withData(["Curriculum Vitae's" => $curriculum, 
-                        "Video CV" => $curriculum->getMedia(MediaCollections::VideoCurriculum)])
+            ->withData(["curriculum" => $curriculum, 
+                        "video" => $curriculum->getMedia(MediaCollections::VideoCurriculum)])
             ->build();
     }
  
@@ -133,7 +133,7 @@ class currimController extends Controller
         return ResponseBuilder::asSuccess()
             ->withHttpCode(Response::HTTP_OK)
             ->withMessage("Curriculum vitae succesfully updated")
-            ->withData(["Curriculum Vitae" => $curriculum])
+            ->withData(["curriculum" => $curriculum])
             ->build();
     }
 

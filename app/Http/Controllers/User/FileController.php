@@ -56,7 +56,7 @@ class FileController extends Controller
         return ResponseBuilder::asSuccess()
             ->withHttpCode(Response::HTTP_OK)
             ->withMessage("File(s) succesfully fetched")
-            ->withData(["File(s) information" => $fileData])
+            ->withData(["files" => $fileData])
             ->build();
     }
 
@@ -71,7 +71,7 @@ class FileController extends Controller
         $this->db->beginTransaction();
 
         //upload to s3
-        $file_data =Storage::cloud()->put('files/', $request->file('file'));
+        $file_data = Storage::cloud()->put('files/', $request->file('file'));
 
         $file = new $this->file;
         $file->title = $request->title;
@@ -106,7 +106,7 @@ class FileController extends Controller
         return ResponseBuilder::asSuccess()
             ->withHttpCode(Response::HTTP_OK)
             ->withMessage("File(s) succesfully created")
-            ->withData(["File(s)" => $file])
+            ->withData(["files" => $file])
             ->build();
     }
 
@@ -132,7 +132,7 @@ class FileController extends Controller
         return ResponseBuilder::asSuccess()
             ->withHttpCode(Response::HTTP_OK)
             ->withMessage("File(s) succesfully updated")
-            ->withData(["File(s)" => $file])
+            ->withData(["files" => $file])
             ->build();
     }
 
@@ -150,7 +150,7 @@ class FileController extends Controller
          return ResponseBuilder::asSuccess()
              ->withHttpCode(Response::HTTP_OK)
              ->withMessage("File featured image succesfully fetched")
-             ->withData(["File(s)" => $file])
+             ->withData(["files" => $file])
              ->build();
      }
 
@@ -169,7 +169,7 @@ class FileController extends Controller
         return ResponseBuilder::asSuccess()
             ->withHttpCode(Response::HTTP_OK)
             ->withMessage("File featured image succesfully stored")
-            ->withData(["File(s)" => $file])
+            ->withData(["files" => $file])
             ->build();
     }
 
