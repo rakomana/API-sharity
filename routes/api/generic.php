@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Generic\UserController;
 use App\Http\Controllers\Generic\CurriculumController;
-use React\HttpClient\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,4 +14,5 @@ use React\HttpClient\Request;
 |
 */
 
+Route::get('generic/users', [UserController::class, 'index']);
 Route::get('generic/user/curriculum', [CurriculumController::class, 'index']);
