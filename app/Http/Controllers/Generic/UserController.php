@@ -39,4 +39,19 @@ class UserController extends Controller
             ->withData(["users" => $this->user->all()])
             ->build();
     }
+
+    /**
+     * Show specific resource in storage.
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function show(User $user)
+    {
+        return ResponseBuilder::asSuccess()
+            ->withHttpCode(Response::HTTP_OK)
+            ->withMessage("All users fetched succesfully")
+            ->withData(['user' => $user])
+            ->build();
+    }
 }
