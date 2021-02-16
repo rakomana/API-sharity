@@ -48,14 +48,14 @@ class currimController extends Controller
      */
     public function store(CurriculumStoreRequest $request)
     {
-        /*
+        
         if ($request->user()->curriculum) {
             return ResponseBuilder::asError(ResponseCodes::SOMETHING_WENT_WRONG)
                 ->withHttpCode(Response::HTTP_BAD_REQUEST)
                 ->withMessage("User already has a CV")
                 ->build();
         }
-        */
+        
         $this->db->beginTransaction();
         
         $curriculum =new $this->curriculum();
@@ -98,6 +98,14 @@ class currimController extends Controller
     {
         $curriculum = $request->user()->curriculum;
 
+        if(!$curriculum)
+        {
+            return ResponseBuilder::asSuccess()
+                ->withHttpCode(Response::HTTP_OK)
+                ->withMessage("User doesn't have the curriculum")
+                ->build();
+        }
+        
         return ResponseBuilder::asSuccess()
             ->withHttpCode(Response::HTTP_OK)
             ->withMessage("Curriculum vitae's succesfully fetched")
@@ -146,11 +154,12 @@ class currimController extends Controller
      */
     public function updateVideoCv(Request $request)
     {  
-        if($request->user()->curriculum->media)
+        if(count($request->user()->curriculum->media) > 0)
         {
             return ResponseBuilder::asError(ResponseCodes::SOMETHING_WENT_WRONG)
                 ->withHttpCode(Response::HTTP_BAD_REQUEST)
                 ->withMessage("User already has a Video-CV")
+                ->withData(["curriculum" => $request->user()->curriculum->media])
                 ->build();
         }
 
