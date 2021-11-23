@@ -25,52 +25,66 @@ use React\HttpClient\Request;
 |
 */
 
-Route::post('auth/login',[LoginController::class, 'login']);
-Route::post('auth/register',[RegisterController::class, 'register']);
+Route::prefix('auth')->group(function () {
+    Route::post('login',[LoginController::class, 'login']);
+    Route::post('register',[RegisterController::class, 'register']);
+});
 
 Route::middleware('auth:api_user')->group(function() {
     Route::get('/auth/logout',[LoginController::class, 'logout']);
-
     Route::get('/',[AccountController::class, 'show']);
-    Route::post('/',[AccountController::class, 'update']);
-    //Route::get('/logs',[AccountController::class, 'logs']);
-    Route::delete('/',[AccountController::class, 'destroy']);
-    Route::post('/password',[AccountController::class, 'updatePassword']);
-    Route::post('/profile-picture',[AccountController::class, 'updateProfilePicture']);
 
-    Route::get('/company',[CompaniesController::class, 'show']);
-    Route::post('/company',[CompaniesController::class, 'store']);
-    Route::patch('/company',[CompaniesController::class, 'update']);
-    Route::delete('/company',[CompaniesController::class, 'destroy']);
-    Route::post('/company/documents',[CompaniesController::class, 'storeDocuments']);
-    Route::get('/company/documents',[CompaniesController::class, 'indexDocuments']);
-    Route::post('/company/logo',[CompaniesController::class, 'updateCompanyLogo']);
-    Route::get('/company/logo',[CompaniesController::class, 'indexCompanyLogo']);
+    Route::group(['prefix' => 'user'], function () {
+        Route::get('/',[AccountController::class, 'show']);
+        Route::post('/',[AccountController::class, 'update']);
+        Route::delete('/',[AccountController::class, 'destroy']);
+        Route::post('password',[AccountController::class, 'updatePassword']);
+        Route::post('/profile-picture',[AccountController::class, 'updateProfilePicture']);
+    });
 
-    Route::get('/file',[FileController::class, 'index']);
-    Route::post('/file',[FileController::class, 'store']);
-    Route::patch('/file',[FileController::class, 'update']);
-    Route::delete('/file',[FileController::class, 'destroy']);
-    Route::get('/file/featured-image',[FileController::class, 'indexFeaturedImage']);
-    Route::post('/file/featured-image',[FileController::class, 'storeFeaturedImage']);
+    Route::group(['prefix' => 'curriculum'], function () {
+        Route::post('/',[CurrimController::class, 'store']);
+        Route::get('/',[CurrimController::class, 'show']);
+        Route::patch('/',[CurrimController::class, 'update']);
+        Route::delete('/',[CurrimController::class, 'deleteVideoCv']);
+        Route::post('/video',[CurrimController::class, 'updateVideoCv']);
+        Route::delete('/video',[CurrimController::class, 'deleteVideoCv']);
+    });
 
-    Route::get('/file-user',[FileUserController::class, 'index']);
-    Route::get('/file-user/{user}',[FileUserController::class, 'show']);
-    Route::post('/file-user/{user}',[FileUserController::class, 'store']);
-    Route::delete('/file-user/{user}',[FileUserController::class, 'destroy']);
-    //Route::post('/file-user/{user}',[FileUserController::class, 'assignRole']);
+    Route::group(['prefix' => 'company'], function () {
+        Route::get('/',[CompaniesController::class, 'show']);
+        Route::post('/',[CompaniesController::class, 'store']);
+        Route::patch('/',[CompaniesController::class, 'update']);
+        Route::delete('/',[CompaniesController::class, 'destroy']);
+        Route::post('/documents',[CompaniesController::class, 'storeDocuments']);
+        Route::get('/documents',[CompaniesController::class, 'indexDocuments']);
+        Route::post('/logo',[CompaniesController::class, 'updateCompanyLogo']);
+        Route::get('/logo',[CompaniesController::class, 'indexCompanyLogo']);
+    });
 
-    Route::get('/company-user',[CompanyUserController::class, 'index']);
-    Route::get('/company-user/{user}',[CompanyUserController::class, 'show']);
-    Route::post('/company-user',[CompanyUserController::class, 'store']);
-    Route::delete('/company-user/{user}',[CompanyUserController::class, 'destroy']);
-    //Route::post('/company-user/{user}',[CompanyUserController::class, 'assignRole']);
-    Route::post('/company-user/{user}',[CompanyUserController::class, 'update']);
+    Route::group(['prefix' => 'file'], function () {
+        Route::get('/',[FileController::class, 'index']);
+        Route::post('/',[FileController::class, 'store']);
+        Route::patch('/',[FileController::class, 'update']);
+        Route::delete('/',[FileController::class, 'destroy']);
+        Route::get('/featured-image',[FileController::class, 'indexFeaturedImage']);
+        Route::post('/featured-image',[FileController::class, 'storeFeaturedImage']);
+    });
 
-    Route::post('curriculum',[CurrimController::class, 'store']);
-    Route::get('curriculum',[CurrimController::class, 'show']);
-    Route::patch('curriculum',[CurrimController::class, 'update']);
-    Route::post('curriculum/video',[CurrimController::class, 'updateVideoCv']);
-    Route::delete('curriculum/video',[CurrimController::class, 'deleteVideoCv']);
-    Route::delete('curriculum',[CurrimController::class, 'deleteVideoCv']);
+    Route::group(['prefix' => 'file-user'], function () {
+        Route::get('/',[FileUserController::class, 'index']);
+        Route::get('/{user}',[FileUserController::class, 'show']);
+        Route::post('/{user}',[FileUserController::class, 'store']);
+        Route::delete('/{user}',[FileUserController::class, 'destroy']);
+        //Route::post('/{user}',[FileUserController::class, 'assignRole']);
+    });
+
+    Route::prefix('company-user')->group(function () {
+        Route::get('/',[CompanyUserController::class, 'index']);
+        Route::post('/',[CompanyUserController::class, 'store']);
+        Route::get('/{user}',[CompanyUserController::class, 'show']);
+        Route::post('/{user}',[CompanyUserController::class, 'update']);
+        Route::delete('/{user}',[CompanyUserController::class, 'destroy']);
+        //Route::post('/{user}',[CompanyUserController::class, 'assignRole']);
+    });
 });

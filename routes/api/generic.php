@@ -14,6 +14,8 @@ use App\Http\Controllers\Generic\CurriculumController;
 |
 */
 
-Route::get('generic/users', [UserController::class, 'index']);
-Route::get('generic/user/{user}', [UserController::class, 'show']);
-Route::get('generic/user/curriculum', [CurriculumController::class, 'index']);
+Route::group(['prefix' => 'generic/user'], function () {
+    Route::get('/', [UserController::class, 'index']);
+    Route::get('/{user}', [UserController::class, 'show']);
+    Route::get('/curriculum', [CurriculumController::class, 'index']);
+});
